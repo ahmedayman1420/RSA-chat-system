@@ -143,7 +143,7 @@ function isPrime(num) {
   let isPrm = true;
   if (num == 0 || num == 1) isPrm = false;
 
-  for (var i = 2n; i <= Math.sqrt(Number(num)); i++) {
+  for (var i = 2; i <= Math.sqrt(num); i++) {
     if (num % i == 0) {
       isPrm = false;
       break;
@@ -157,8 +157,8 @@ function generateKey(min, size) {
 
   ispm = false;
   while (!ispm) {
-    p = randomNumber(Math.pow(2, size / 2), Math.pow(2, size));
-    p = BigInt(p);
+    0;
+    p = randomNumber(Math.pow(2, size - 1), Math.pow(2, size));
     ispm = isPrime(p);
     // console.log(p);
     // console.log(ispm);
@@ -166,20 +166,18 @@ function generateKey(min, size) {
 
   ispm = false;
   while (!ispm) {
-    q = randomNumber(Math.pow(2, size / 2), Math.pow(2, size));
-    q = BigInt(q);
+    0;
+    q = randomNumber(Math.pow(2, size - 1), Math.pow(2, size));
     ispm = isPrime(q);
-    if (ispm && p == q) ispm = false;
     // console.log(q);
     // console.log(ispm);
   }
 
-  ispm = false;
-  while (!ispm) {
-    e = randomNumber(Math.pow(2, size / 4), Math.pow(2, size / 2));
-    e = BigInt(e);
-    if ((p - 1n) * (q - 1n) > e && GCD(e, (p - 1n) * (q - 1n)) == 1n)
-      ispm = true;
+  ispm = 0;
+  while (ispm != 1) {
+    0;
+    e = randomNumber(Math.pow(2, size - 1), Math.pow(2, size * 2 - 1));
+    if ((p - 1) * (q - 1) > e) ispm = GCD(e, (p - 1) * (q - 1));
     // console.log(e);
     // console.log(ispm);
   }
@@ -197,45 +195,42 @@ function generateKey(min, size) {
 // ====== --- ====== > ============================================= < ====== --- ====== //
 // //////////////////////////////////////////////////////////////////////////////////////////// //
 
-(async function () {
-  // p = 233n;
-  // q = 233n;
-  // e = 9n;
-  // console.log(GCD(e, (p - 1n) * (q - 1n)));
-  // for (var i = 0; i <= 100; i++) {
-  // var { p, q, e } = await generateKey(0, 128);
-  // p = BigInt(p);
-  // q = BigInt(q);
-  // e = BigInt(e);
-  // var flag = true;
-  // let message = "a";
-  // let cmessage = "a";
-  // cText = await encryptMessage(message, p * q, e);
-  // plaintext = await decryptMessage(cText, p, q, e);
-  // console.log("p: " + p);
-  // console.log("q: " + q);
-  // console.log("e: " + e);
-  // console.log("cText: ", cText);
-  // console.log("=============================================");
-  // console.log(GCD(e, (q - 1n) * (p - 1n)));
-  // console.log((q - 1n) * (p - 1n) > e);
-  // console.log("Message: ", cmessage);
-  // console.log("=============================================");
-  // console.log("Plaintext: ", plaintext);
-  // console.log("=============================================");
-  // console.log(cmessage == plaintext);
-  // if (cmessage != plaintext) {
-  //   console.log("p: " + p);
-  //   console.log("q: " + q);
-  //   console.log("e: " + e);
-  //   flag = false;
-  // }
-  // console.log("=============================================");
-  // }
-})();
+// (async function () {
+// p = 1000000007n;
+// q = 1000000009n;
+// e = 23917n;
+
+// for (var i = 0; i <= 1000; i++) {
+//   var { p, q, e } = await generateKey(0, 16);
+//   p = BigInt(p);
+//   q = BigInt(q);
+//   e = BigInt(e);
+
+//   let message =
+//     "the way in which something especially an organization or equipment is organized planned or arranged.";
+//   let cmessage =
+//     "the way in which something especially an organization or equipment is organized planned or arranged.";
+//   cText = await encryptMessage(message, p * q, e);
+//   plaintext = await decryptMessage(cText, p, q, e);
+
+// console.log("p: " + p);
+// console.log("q: " + q);
+// console.log("e: " + e);
+// console.log("cText: ", cText);
+// console.log("=============================================");
+// console.log(GCD(e, (q - 1n) * (p - 1n)));
+// console.log((q - 1n) * (p - 1n) > e);
+// console.log("Message: ", cmessage);
+// console.log("=============================================");
+// console.log("Plaintext: ", plaintext);
+// console.log("=============================================");
+// console.log(cmessage == plaintext);
+// console.log("=============================================");
+//   }
+// })();
 
 // //////////////////////////////////////////////////////////////////////////////////////////// //
 // ====== --- ====== > ============================================= < ====== --- ====== //
-// ====== --- ====== > Test With Array of objects < ====== --- ====== //
+// ====== --- ====== > Export Functions < ====== --- ====== //
 // ====== --- ====== > ============================================= < ====== --- ====== //
 // //////////////////////////////////////////////////////////////////////////////////////////// //

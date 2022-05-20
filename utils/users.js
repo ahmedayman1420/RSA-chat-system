@@ -57,7 +57,7 @@ async function getCurrentUser(name) {
 
 // ====== --- ====== > User leaves chat < ====== --- ====== //
 async function userLeave(room) {
-  const data = await users.updateMany(
+  const data = await users.update(
     { cRoom: room, isDeleted: false },
     { isActive: false, rooms: [] }
   );
