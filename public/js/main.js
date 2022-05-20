@@ -61,6 +61,7 @@ var today = new Date();
     outputUsers(users);
 
     //==// Here check if two users are active, then they can start chatting else wait until both are active
+    console.log(users);
     if (users.length == 2) {
       if (users[0].isActive == true && users[1].isActive == true)
         socket.emit("getPublicKey", { username, room });
@@ -117,6 +118,7 @@ var today = new Date();
     if (today.getHours() >= 12) apm = " pm";
     else apm = " am";
     if (hours == 0) hours = today.getHours() + 12;
+    if (hours > 12) hours = today.getHours() - 12;
     if (mint < 10) mint = `0${today.getMinutes()}`;
 
     if (isReady) {
