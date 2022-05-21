@@ -3,7 +3,8 @@
 // ====== --- ====== > Sub-Functions < ====== --- ====== //
 // ====== --- ====== > ============================================= < ====== --- ====== //
 // //////////////////////////////////////////////////////////////////////////////////////////// //
-var chart = require('chart.js');
+
+var date = new Date();
 
 function ConvertToInt(message_str) {
   res = 0n;
@@ -177,7 +178,7 @@ function generateKey(min, size) {
 
   ispm = false;
   while (!ispm) {
-    e = randomNumber(Math.pow(2, size / 4), Math.pow(2, size / 2));
+    e = randomNumber(Math.pow(2, size / 2), Math.pow(2, size));
     e = BigInt(e);
     if ((p - 1n) * (q - 1n) > e && GCD(e, (p - 1n) * (q - 1n)) == 1n)
       ispm = true;
@@ -380,27 +381,33 @@ function ChosenCipherTextAttack(){
  * @returns The number of bits and their attack time
  */
 function BruteForceAttackTime(){
-  const date = new Date();
-  let numBits = [];
-  let ellapsedTime = [];
-  for(let i = 8; i < 17; i += 2 * i){
-    numBits.push(2 * i);
+  let graphData = {numBits: [], ellapsedTime:[]}
+  for(let i = 18; i <= 22; i += 2){
+    graphData.numBits.push(i * 2);
+    console.log('At ' + i * 2 + ' Bits')
     let {p, q, e} = generateKey(0, i);
     let n = p * q;
-    let phi_n = (p - 1n) * (q - 1n);
     let cText = Encrypt('o', n, e);
-    let beforeTime = date.getTime();
-    for(let j = 0n; j < phi_n; j++){
+    let beforeTime = performance.now();
+    for(let j = 0n; j < n; j++){
       let pText = DecryptionAttack(cText, j, n);
       if(pText == 'o'){
-        console.log('Done');
+        console.log('Key found Done');
+        console.log('At key : ' + j);
         break;
       }
     }
-    let afterTime = date.getTime();
-    ellapsedTime.push((afterTime - beforeTime) / 2);
+    let afterTime = performance.now();
+    console.log('p: ' + p)
+    console.log('q: ' + q)
+    console.log('e: ' + e)
+    console.log('total ellapsed time: ' + (afterTime - beforeTime) + ' seconds' + '\n');
+    graphData.ellapsedTime.push((afterTime - beforeTime));
   }
-  return {numBits, ellapsedTime};
+  return graphData;
 }
 
-// var {numBits, ellapsedTime} = TestAttackTime();
+var obj = {numBits: [], ellapsedTime:[]};
+obj = BruteForceAttackTime();
+console.log(obj.ellapsedTime);
+
