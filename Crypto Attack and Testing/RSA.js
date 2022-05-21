@@ -296,7 +296,83 @@ async function TestEncryptionTime() {
   return ellapsedTime;
 }
 
-(async function () {
-  encryptionTest = await TestEncryptionTime();
-  console.log(encryptionTest);
-})();
+// (async function () {
+//   encryptionTest = await TestEncryptionTime();
+//   console.log(encryptionTest);
+// })();
+
+// RSA attack using chosen cipher text attack
+
+function decryptMessageCCA(ctext, p, q, e) {
+  ctext = ctext.split("//==//");
+  plaintext = [];
+
+  for (var i = 0; i < ctext.length; i++) {
+    plaintext.push(Decrypt(ctext[i], p, q, e));
+  }
+  return plaintext.join("//==//");
+}
+
+function ChosenCipherTextAttack(){
+  let p = 1000000007n;
+  let q = 1000000009n;
+  let n = p * q;
+  let e = 23917n;
+  // Encrypt the message
+  // generate random number from 0 to n / 2 to be multiplied by cipher text and not exceed the n
+  let rndNumber = BigInt(randomNumber(0, 10));
+  let pText = "the way in which something especially an organization or equipment is organized planned or arranged.";
+  let cText = encryptMessage(pText, n, e);
+  let splittedEncryptedMessage = cText.split('//==//');
+  
+  for(let i = 0; i < splittedEncryptedMessage.length; i++){
+    let messageToInt = ConvertToInt(splittedEncryptedMessage[i]);
+    splittedEncryptedMessage[i] = ConvertToStr(messageToInt * (rndNumber ** e));
+  }
+
+  // Message Decryption
+  let decryptedMessage = decryptMessageCCA(splittedEncryptedMessage.join('//==//'), p, q, e);
+  console.log('Decrypted Message: ' + decryptedMessage + '\n');
+  let splittedDecryptedMessage = decryptedMessage.split('//==//');
+  for(let i = 0; i < splittedDecryptedMessage.length; i++){
+    let messageToInt = ConvertToInt(splittedDecryptedMessage[i]);
+    splittedDecryptedMessage[i] = ConvertToStr(messageToInt / rndNumber);
+  }
+  console.log('Attacked Message: ' + splittedDecryptedMessage.join('') + '\n');
+}
+
+
+function DecryptionAttack(cipherText, privateKey, n){
+  cipherText = ConvertToInt(cipherText);
+  plainText = power(cipherText, privateKey, n);
+  plainText = ConvertToStr(plainText);
+  return plainText;
+}
+
+function TestAttackTime(){
+  const date = new Date();
+  let numBits = [];
+  let ellapsedTime = [];
+  for(let i = 8; i < 17; i += 2 * i){
+    numBits.push(2 * i);
+    let {p, q, e} = generateKey(0, i);
+    let n = p * q;
+    let phi_n = (p - 1n) * (q - 1n);
+    let cText = Encrypt('o', n, e);
+    let beforeTime = date.getTime();
+    for(let j = 0n; j < phi_n; j++){
+      let pText = DecryptionAttack(cText, j, n);
+      if(pText == 'o'){
+        console.log('Done');
+        break;
+      }
+    }
+    let afterTime = date.getTime();
+    ellapsedTime.push((afterTime - beforeTime) / 2);
+  }
+  return {numBits, ellapsedTime};
+}
+
+var {numBits, ellapsedTime} = TestAttackTime();
+console.log(ellapsedTime);
+
