@@ -3,6 +3,7 @@
 // ====== --- ====== > Sub-Functions < ====== --- ====== //
 // ====== --- ====== > ============================================= < ====== --- ====== //
 // //////////////////////////////////////////////////////////////////////////////////////////// //
+var chart = require('chart.js');
 
 function ConvertToInt(message_str) {
   res = 0n;
@@ -256,6 +257,43 @@ function generateKey(min, size) {
 // ====== --- ====== > ============================================= < ====== --- ====== //
 // //////////////////////////////////////////////////////////////////////////////////////////// //
 
+/**
+ * This function decrypt the given cipher text given any key
+ * @param {string} cipherText The cipher text needed to be decrypted
+ * @param {BigInt} privateKey The key used to decrypt the message
+ * @param {BigInt} n 
+ * @returns The decrypted message given the private key
+ */
+function DecryptionAttack(cipherText, privateKey, n){
+  cipherText = ConvertToInt(cipherText);
+  plainText = power(cipherText, privateKey, n);
+  plainText = ConvertToStr(plainText);
+  return plainText;
+}
+
+/**
+ * Decrypt the message for the chosen cipher text attack
+ * @param {string} ctext Decrypted message
+ * @param {bigint} p The first prime factor for n
+ * @param {bigint} q The second prime factor for n
+ * @param {bigint} e The exponent used in RSA decryption
+ * @returns The array of the decrypted message
+ */
+function decryptMessageCCA(ctext, p, q, e) {
+  ctext = ctext.split("//==//");
+  plaintext = [];
+
+  for (var i = 0; i < ctext.length; i++) {
+    plaintext.push(Decrypt(ctext[i], p, q, e));
+  }
+  return plaintext.join("//==//");
+}
+
+/**
+ * Test the encryption time using various keys with different number of bits
+ * and calculate the encryption time
+ * @returns void
+ */
 async function TestEncryptionTime() {
   var numBits = [];
   var ellapsedTime = [];
@@ -301,18 +339,14 @@ async function TestEncryptionTime() {
 //   console.log(encryptionTest);
 // })();
 
-// RSA attack using chosen cipher text attack
-
-function decryptMessageCCA(ctext, p, q, e) {
-  ctext = ctext.split("//==//");
-  plaintext = [];
-
-  for (var i = 0; i < ctext.length; i++) {
-    plaintext.push(Decrypt(ctext[i], p, q, e));
-  }
-  return plaintext.join("//==//");
-}
-
+/**
+ * Apply the chosen cipher text attack and print the message after attack which follows the methodolgy:
+ * c = m ** e mod n
+ * c` = c * r**e mod n
+ * m * r = c` ** d mod n
+ * m = m * r / r
+ * @returns void
+ */
 function ChosenCipherTextAttack(){
   let p = 1000000007n;
   let q = 1000000009n;
@@ -341,15 +375,11 @@ function ChosenCipherTextAttack(){
   console.log('Attacked Message: ' + splittedDecryptedMessage.join('') + '\n');
 }
 
-
-function DecryptionAttack(cipherText, privateKey, n){
-  cipherText = ConvertToInt(cipherText);
-  plainText = power(cipherText, privateKey, n);
-  plainText = ConvertToStr(plainText);
-  return plainText;
-}
-
-function TestAttackTime(){
+/**
+ * Apply brute force attack on RSA crypto system by encrypt the message using different key sizes
+ * @returns The number of bits and their attack time
+ */
+function BruteForceAttackTime(){
   const date = new Date();
   let numBits = [];
   let ellapsedTime = [];
@@ -373,6 +403,4 @@ function TestAttackTime(){
   return {numBits, ellapsedTime};
 }
 
-var {numBits, ellapsedTime} = TestAttackTime();
-console.log(ellapsedTime);
-
+// var {numBits, ellapsedTime} = TestAttackTime();
