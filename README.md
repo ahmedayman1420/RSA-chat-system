@@ -7,3 +7,12 @@ npm install
 npm start
 Go to localhost:3000
 ```
+# Screenshots
+### Register page
+![intro](screenshots/Screenshot1)
+### Chat Room
+![chat](screenshots/chatRoom)
+### Join into a room
+![join](screenshots/JoinTheRoom)
+### Sending message
+![sending](screenshots/sendingMessage)
