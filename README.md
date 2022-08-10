@@ -9,10 +9,10 @@ Go to localhost:3000
 ```
 # Screenshots
 ### Register page
-![intro](screenshots/Screenshot1)
+![intro](screenshots/Screenshot1.png)
 ### Chat Room
-![chat](screenshots/chatRoom)
+![chat](screenshots/chatRoom.png)
 ### Join into a room
-![join](screenshots/JoinTheRoom)
+![join](screenshots/JoinTheRoom.png)
 ### Sending message
-![sending](screenshots/sendingMessage)
+![sending](screenshots/sending message.png)
