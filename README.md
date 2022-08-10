@@ -15,4 +15,9 @@ Go to localhost:3000
 ### Join into a room
 ![join](screenshots/JoinTheRoom.png)
 ### Sending message
-![sending](screenshots/sending message.png)
+![sending](screenshots/sendingMessage.png)
+
+
+
+https://user-images.githubusercontent.com/62177195/183974780-ec46f5f5-6442-4c7e-9890-b314a4b23385.mp4
+
